@@ -1,3 +1,7 @@
+/**
+ * Segmented With Default Manifest Exercise
+ */
+
 import com.bitmovin.api.sdk.BitmovinApi;
 import com.bitmovin.api.sdk.model.*;
 
