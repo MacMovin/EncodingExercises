@@ -1,7 +1,7 @@
 import com.bitmovin.api.sdk.BitmovinApi;
 import com.bitmovin.api.sdk.model.*;
 
-public class PerTitleBasic {
+public class PerTitleWithFixedResolution {
   /**
    * Bunch of variables
    */
@@ -10,6 +10,7 @@ public class PerTitleBasic {
   private static String myS3BucketName;
   private static String myS3AccessKey;
   private static String myS3SecretKey;
+  private static final int videoHeight = 720;
   private static final long audioBitrate = 128000L;
 
   /**
@@ -30,8 +31,8 @@ public class PerTitleBasic {
 
     // some variables
     final String inputPath = "/input/flower_show_1080p.mov";
-    final String outputPath = "/output/encodings/per_title_basic";
-    final String fileName = "per_title_basic.mpd";
+    final String outputPath = "/output/encodings/per_title_fixed";
+    final String fileName = "per_title_fixed.mpd";
     final String hostName = "mackenzie-emea.s3.eu-west-1.amazonaws.com";
     final double segmentLength = 4.0;
 
@@ -60,13 +61,14 @@ public class PerTitleBasic {
     Encoding encoding = new Encoding();
     encoding.setCloudRegion(CloudRegion.AUTO);
     encoding.setEncoderVersion("LATEST");
-    encoding.setName("MacKenzie Exercise - Per Title Basic");
+    encoding.setName("MacKenzie Exercise - Per Title Fixed");
     encoding = bitmovinApi.encoding.encodings.create(encoding);
 
     // create the H264 video config
     H264VideoConfiguration videoConfiguration = new H264VideoConfiguration();
     videoConfiguration.setName("H.264");
     videoConfiguration.setPresetConfiguration(PresetConfiguration.VOD_STANDARD);
+    videoConfiguration.setHeight(videoHeight);
     videoConfiguration =
         bitmovinApi.encoding.configurations.video.h264.create(videoConfiguration);
 
@@ -86,7 +88,7 @@ public class PerTitleBasic {
     Stream streamVid = new Stream();
     streamVid.addInputStreamsItem(streamInput);
     streamVid.setCodecConfigId(videoConfiguration.getId());
-    streamVid.setMode(StreamMode.PER_TITLE_TEMPLATE);
+    streamVid.setMode(StreamMode.PER_TITLE_TEMPLATE_FIXED_RESOLUTION);
 
     // set audio stream
     Stream streamAudio = new Stream();
@@ -127,7 +129,6 @@ public class PerTitleBasic {
 
     // set the per title config
     H264PerTitleConfiguration perTitleConfiguration = new H264PerTitleConfiguration();
-    perTitleConfiguration.setAutoRepresentations(new AutoRepresentation());
     PerTitle perTitle = new PerTitle();
     perTitle.setH264Configuration(perTitleConfiguration);
 
