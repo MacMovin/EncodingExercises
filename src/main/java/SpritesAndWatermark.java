@@ -175,16 +175,18 @@ public class SpritesAndWatermark {
     }
 
     // create sprites
-    if (false) {
+    if (true) {
       Sprite sprites = new Sprite();
       encodingOutput.setOutputPath(outputPath + "/sprites");
       sprites.addOutputsItem(encodingOutput);
-      sprites.setName("sprites.png");
-      sprites.setSpriteName("spritesName");
+      sprites.setName("sprites.jpg");
+      sprites.setSpriteName("spritesName.jpg");
       sprites.setWidth(320);
       sprites.setHeight(240);
-      sprites.setDistance(10.0);
+      sprites.setDistance(4.0);
       sprites.setVttName("sprites.vtt");
+      sprites.setJpegConfig(new SpriteJpegConfig());
+      sprites.setCreationMode(SpriteCreationMode.INTERVAL_START);
       bitmovinApi.encoding.encodings.streams.sprites.create(
           encoding.getId(), streamVid.getId(), sprites);
     }
